@@ -1,0 +1,376 @@
+# PROJEKT SPECIFIKÁCIÓ: AI Workflow Automation Tool (No-Code/Low-Code LLM Orchestrator)
+
+## 1. A Program Leírása (High-Level Overview)
+A rendszer egy webalapú, no-code/low-code platform, amely lehetővé teszi nem technikai felhasználók számára komplex AI munkafolyamatok (pipeline-ok) vizuális megtervezését és automatizált futtatását. 
+Gondolj rá úgy, mint a Make.com (Integromat) vagy a Zapier kifejezetten Generatív AI feladatokra optimalizált változatára. 
+
+A felhasználók egy "húzd-és-vond" (drag-and-drop) felületen csomópontokat (Node-okat) köthetnek össze, amelyek egy Irányított Körmentes Gráfot (DAG - Directed Acyclic Graph) alkotnak. Ezek a csomópontok lehetnek triggerek (időzítők, webhookok), adatfeldolgozók, AI modellek (LLM promptok, RAG keresések), és kimeneti integrációk (email küldés, adatbázis mentés).
+
+## 2. Részletes Funkciók (Feature Set)
+
+### 2.1. Vizuális Folyamatépítő (Visual Builder - Frontend)
+* **Drag-and-Drop Canvas:** Végtelenített munkaterület, ahol a csomópontok elhelyezhetők és összeköthetők.
+* **Node Konfigurátor:** Minden csomóponthoz tartozik egy oldalsó panel, ahol a paraméterek (pl. LLM system prompt, API kulcsok, bemeneti változók) beállíthatók.
+* **Dinamikus Változók:** Az "A" csomópont kimenete referenciaként (pl. `{{node_1.output.text}}`) használható a "B" csomópont bemeneteként.
+* **Valós idejű tesztelés:** A felületen lévő "Run" gombbal a pipeline (vagy egy adott csomópont) tesztelhető, a kimenet azonnal megjelenik.
+
+### 2.2. Végrehajtó Motor (Execution Engine - Backend)
+* **DAG Értelmező:** A frontendről érkező JSON gráfot a rendszer sorrendi (topológiai) futtatási tervvé alakítja.
+* **Állapotkezelés (State Management):** Futtatás közben a memóriában (vagy Redisben) tartja az aktuális állapotot (melyik node futott le, mi volt a kimenete, volt-e hiba).
+* **Hiba- és Újrapróbálkozás kezelés (Retry Logic):** Ha egy külső API (pl. OpenAI) timeoutol, a node bizonyos időközönként újrapróbálkozik.
+* **Aszinkron Háttérfuttatás:** A hosszú ideig futó folyamatok nem blokkolják a szervert, hanem üzenetsorokon (Message Queue) keresztül, elkülönített "Worker" folyamatok végzik el a munkát.
+
+### 2.3. Csomópont Típusok (Node Library)
+* **Triggerek:** Webhook bejövő kérés, Cron job (időzítő), Manuális indítás.
+* **AI/LLM Node-ok:** Text Generation (Prompt alapján), Summarization, Data Extraction (JSON formázás LLM-mel).
+* **Tudásbázis Node-ok (RAG):** Vektoros keresés egy adott dokumentum-gyűjteményben.
+* **Integrációk:** HTTP Request (egyedi API hívásokhoz), Gmail/SMTP (levélküldés), Slack (üzenetküldés).
+* **Logikai Node-ok:** If/Else elágazások a kimenet tartalmától függően.
+
+### 2.4. Felhasználó és Erőforrás Kezelés
+* **Autentikáció & Authorizáció:** JWT alapú bejelentkezés, projektek/munkaterületek (workspaces) szeparációja.
+* **Tudásbázis (Knowledge Base) menedzsment:** Fájlok (PDF, TXT) feltöltése, chunkolása (darabolása) és vektoradatbázisba szinkronizálása.
+* **Sablonok (Templates):** Kész pipeline-ok elmentése, megosztása, és egy kattintással történő újrahasználata.
+* **Futtatási Naplók (Logs):** Visszamenőleges statisztikák, sikeres/sikertelen lefutások és a költségek (tokenhasználat) nyomon követése.
+
+---
+
+## 3. Technológiai Stack Lehetőségek
+
+Mivel ingyenes, de skálázható megoldást keresel, az alábbi opciók közül érdemes választani.
+
+### 3.1. Frontend: React.js (Next.js) + React Flow
+* **Miért?** A vizuális szerkesztőhöz a `React Flow` a de facto iparági standard. Next.js-t használva a routing és az API kommunikáció egyszerűsödik. A TailwindCSS gyorsítja a formázást.
+* **Alternatíva:** Vue.js + Vue Flow (ha ahhoz jobban értesz, de a React Flow ökoszisztémája nagyobb).
+
+### 3.2. Backend: A "Nagy Három"
+* **Opció A: Node.js (NestJS vagy Express) + TypeScript (Javasolt)**
+    * *Előny:* Ugyanaz a nyelv, mint a frontenden. A JS aszinkron, eseményvezérelt természete kiváló I/O intenzív hálózatépítéshez (API hívások). Nagy közösség.
+    * *Hátrány:* Számításigényes feladatoknál (pl. nagyméretű PDF parse-olás) a Node single-threaded mivolta szűk keresztmetszet lehet.
+* **Opció B: Python (FastAPI)**
+    * *Előny:* Az AI/ML világ nyelve. A LangChain, LlamaIndex, és vektoradatbázis SDK-k itt a legfejlettebbek. 
+    * *Hátrány:* Két külön nyelv a projektben (JS elöl, Python hátul). Az aszinkron feladatkezelés (Celery) picit bonyolultabb beállítani.
+* **Opció C: Golang**
+    * *Előny:* Extrém gyors, kevés memóriát eszik, tökéletes a worker-ekhez és a magas párhuzamossághoz (goroutines).
+    * *Hátrány:* Sokkal kevesebb kész AI csomag, sok mindent (pl. RAG pipeline) nulláról kell megírni.
+
+**Döntési javaslat:** Használj **Node.js (TypeScript)**-et a fő API szerverhez (CRUD, auth, routing), és ha kell, csinálj egy apró, különálló **Python** mikroszolgáltatást (microservice) kifejezetten a PDF-ek feldolgozására és vektorizálására.
+
+### 3.3. Adatbázisok & Infrastruktúra
+* **Relációs Adatbázis (PostgreSQL):** Felhasználók, pipeline definíciók (JSON formátumban tárolt gráfok), naplók tárolására.
+* **Message Broker & Cache (Redis):** Az üzenetsorhoz (hogy a backend átadja a munkát a workereknek) és gyorsítótárazáshoz elengedhetetlen.
+* **Vector Database:** A RAG-hoz és szemantikus kereséshez.
+
+---
+
+## 4. Ingyenes Hosztolás és AI Szolgáltatások (0 Ft-os Stack)
+
+Az ingyenes "Free Tier" szintek használatának hátránya, hogy a szerverek időnként leállhatnak (cold start), és szigorú limitek vannak. A senioritás abban rejlik, hogyan kezeled ezeket a limiteket.
+
+* **Frontend Hosztolás:** `Vercel` vagy `Cloudflare Pages`. (Ingyenes, villámgyors globális CDN).
+* **Backend & Workers Hosztolás:** `Render.com` (Ingyenes tier, de 15 perc inaktivitás után leáll, így az első kérés lassú lesz). Vagy `Railway` / `Fly.io` (ingyenes krediteket adnak havonta).
+* **Adatbázis (Postgres):** `Supabase` (Kiváló ingyenes tier, beépített Auth-tal, ha használni akarod), vagy `Neon.tech` (Serverless Postgres).
+* **Redis:** `Upstash` (Serverless Redis, tökéletes ingyenes limittel).
+* **Vektor Adatbázis:** `Pinecone` vagy `Qdrant Cloud` (Mindkettő bőven elegendő ingyenes kapacitást ad kísérletezéshez).
+
+**Ingyenes AI / LLM Szolgáltatások:**
+* **Groq API:** Extrém gyors, Llama 3 és Mixtral modellek futnak rajta. A fejlesztői API jelenleg nagyon nagyvonalú ingyenes limittel rendelkezik. Tökéletes a pipeline-ok futtatására.
+* **Google Gemini API:** A Gemini 1.5 Flash ingyenes tier-je kiváló adatkinyerésre és általános feladatokra (percenkénti limitre figyelni kell).
+* **Cohere API:** A beágyazásokhoz (Embeddings a RAG-hoz) és kereséshez az egyik legjobb ingyenes opció.
+* **Hugging Face Inference API:** Kisebb, specifikus feladatokhoz ingyenesen meghívható nyílt forráskódú modellek.
+
+---
+
+## 5. Rendszer Skálázhatósága & Architektúra
+
+Hogyan garantáljuk, hogy a rendszer ne omoljon össze, ha 1000 felhasználó egyszerre indítja el a folyamatait? **Eseményvezérelt (Event-Driven) Mikro-architektúrával.**
+
+1.  **Szeparáció:** Két fő backend komponens van. Az **API Szerver** (amivel a weboldal kommunikál) és a **Worker(ek)** (akik a tényleges LLM hívásokat és adatfeldolgozást végzik).
+2.  **Üzenetsor (Message Queue):** Amikor egy folyamat elindul, az API Szerver nem maga hajtja végre! Létrehoz egy "Job"-ot, és bedobja a Redis sorba (pl. Node.js-ben a `BullMQ` könyvtárral). Az API szerver azonnal válaszol a frontendnek: "Folyamat elindítva, státusz: PENDING".
+3.  **Worker-ek (Horizontális skálázás):** A Worker folyamatok (amelyek külön szerveren is futhatnak) figyelik a Redis sort. Kivesznek egy feladatot, végrehajtják a DAG alapján, frissítik az állapotot az adatbázisban, és a weboldal (esetleg WebSockets vagy Polling segítségével) megkapja a frissítést. Ha megnő a terhelés, egyszerűen csak több Worker-t indítasz el.
+
+---
+
+## 6. Repozitórium Struktúra (Monorepo javasolt)
+
+Ehhez a projekthez egy **Monorepo** (pl. `Turborepo` vagy `Nx` használatával) a legjobb választás. 
+
+**Miért ne Polyrepo (külön repók)?** Mivel a frontendnek, a backendnek és a workereknek **pontosan ugyanazokat a Típusokat (Types/Interfaces)** kell ismerniük a csomópontokról (Nodes) és a gráf struktúráról. Ha külön repóban lennének, pokol lenne a típusok szinkronizálása.
+
+**Javasolt Monorepo Struktúra:**
+```text
+/my-ai-orchestrator
+ ├── /apps
+ │   ├── /frontend     (Next.js, React Flow - Web UI)
+ │   ├── /api-server   (Node.js API - Auth, CRUD, Queueing)
+ │   └── /worker       (Node.js vagy Python process - Execution Engine)
+ ├── /packages
+ │   ├── /database     (Prisma vagy Drizzle ORM sémák és migrációk)
+ │   └── /shared-types (TypeScript interface-ek: Node, Edge, Pipeline, Payload)
+ └── package.json      (Turborepo config)
+
+7. Folyamatleírás: Hogyan fut le egy Pipeline?
+Kiváltó Ok (Trigger): A felhasználó rákattint a "Futtatás" gombra a UI-on.
+
+Kérés: A Frontend elküld egy POST kérést az API-nak a Pipeline ID-jával és a bemeneti adatokkal.
+
+Sorba állítás: Az API beteszi a feladatot a Redis Job Queue-ba, és visszaad egy execution_id-t.
+
+Végrehajtás kezdete: Egy Worker kikapja a feladatot a sorból. Lekéri az adatbázisból a JSON gráfot.
+
+DAG Bejárás: A Worker megkeresi a kezdőpontokat (olyan node-ok, amiknek nincs bemenő éle).
+
+Node Futtatása: Meghívja az adott Node logikáját (pl. csinál egy Groq API hívást a paraméterekkel).
+
+Adat továbbítás: A Node kimenetét elmenti a memóriába az adott execution_id alá. Megnézi, hova vezet a gráf éle. A következő Node bemenetébe beinjektálja az előző kimenetét.
+
+Befejezés: Amikor nincs több csomópont, az állapotot COMPLETED-re állítja az adatbázisban.
+
+8. Végrehajtási Lépések (Roadmap)
+Ne próbálj meg mindent egyszerre megcsinálni. Haladj iteratívan.
+
+Fázis 1: A Mag (Core) & Adatbázis (1-2. hét)
+
+Adatbázis sémák megtervezése (Felhasználók, Pipeline-ok, Executions).
+
+Monorepo felállítása.
+
+Alap API végpontok (CRUD a Pipeline-okhoz).
+
+Fázis 2: A Végrehajtó Motor MVP (3-4. hét)
+
+Egy alap DAG bejáró algoritmus megírása a Workeren belül.
+
+Redis sor bevezetése (BullMQ).
+
+Két egyszerű csomópont megírása: egy "Trigger" és egy "Console.log Output". Tesztelés, hogy a sorrendi futás működik-e.
+
+Fázis 3: Vizuális Frontend MVP (5-6. hét)
+
+React Flow integrálása.
+
+Csomópontok lerakása, összekötése, paraméterek szerkesztése.
+
+A gráf elmentése JSON formátumban az adatbázisba.
+
+Fázis 4: AI és Külső Integrációk (7-8. hét)
+
+"LLM Prompt" csomópont fejlesztése (Groq vagy Gemini API-val).
+
+Webhook csomópont fejlesztése (külső adatok fogadása).
+
+Folyamatok end-to-end tesztelése a UI-ról.
+
+Fázis 5: Fejlett funkciók & RAG (9+ hét)
+
+Tudásbázis funkció (Pinecone bekötése, PDF-ek vektorizálása).
+
+"Vektor Keresés" csomópont beépítése a gráfba.
+
+Autentikáció, Auth és UI csiszolása.
+
+Sablonok (Templates) rendszere.
+
+# PROJEKT SPECIFIKÁCIÓ V2: Node.js AI Workflow Orchestrator
+
+## 1. Architektúra és Környezet (A "Hidegindításos" Ingyenes Stack)
+
+Mivel a költséghatékonyság a cél, az alábbi hosztolási szolgáltatásokat fogjuk használni:
+* **Adatbázis (PostgreSQL):** Supabase (Kiváló ingyenes tier, gyors).
+* **Üzenetsor / Message Queue (Redis):** Upstash (Serverless Redis, tökéletes a "hideg" környezethez, mert nem fogyaszt folyamatosan memóriát).
+* **Frontend (Next.js):** Vercel (Teljesen ingyenes, CI/CD integrálva).
+* **Backend API (Express):** Render.com (Web Service, Free tier - 15 perc után leáll, az első kérés lassú lesz).
+* **Worker (Node.js script):** Render.com (Background Worker, Free tier).
+
+---
+
+## 2. Repozitórium Struktúra (Turborepo) és Elérési Utak
+
+A projektet egyetlen monorepóban építjük fel. Az alábbi struktúrát hozd létre a gyökérmappában.
+
+```text
+/ai-orchestrator-monorepo
+ ├── package.json                   (Gyökér konfiguráció, Turborepo setup)
+ ├── turbo.json                     (Turborepo build és futtatási scriptek)
+ │
+ ├── /apps
+ │   ├── /web                       (FRONTEND: Next.js + React Flow)
+ │   │   ├── /src/app               (Next.js oldalak: /, /builder, /logs)
+ │   │   ├── /src/components/flow   (React Flow egyedi csomópont komponensei)
+ │   │   └── package.json
+ │   │
+ │   ├── /api                       (BACKEND API: Express.js)
+ │   │   ├── /src/routes            (API végpontok: /pipelines, /executions)
+ │   │   ├── /src/controllers       (Üzleti logika: mentés, Job sorba rakása)
+ │   │   └── package.json
+ │   │
+ │   └── /worker                    (BACKGROUND WORKER: Node.js DAG Executor)
+ │       ├── /src/engine            (A DAG értelmező és futtató logika)
+ │       ├── /src/nodes             (Az egyes csomópontok AI/API logikája)
+ │       ├── /src/index.ts          (A BullMQ worker inicializálása)
+ │       └── package.json
+ │
+ └── /packages
+     ├── /database                  (Közös adatbázis hozzáférés)
+     │   ├── /prisma/schema.prisma  (Adatbázis táblák definíciója)
+     │   ├── index.ts               (Prisma kliens exportálása)
+     │   └── package.json
+     │
+     └── /types                     (Közös TypeScript Típusok)
+         ├── /src/index.ts          (Pl. NodeDefinition, ExecutionStatus)
+         └── package.json
+
+
+3. Szükséges NPM Csomagok (Requirements)
+A monorepo miatt a csomagokat az adott alprojekt (app vagy package) mappájában kell telepíteni.
+
+3.1. Gyökér (Root) mappában:
+npm i -D turbo typescript npm-run-all
+(A monorepo menedzseléséhez és a TypeScript alapokhoz).
+
+3.2. /apps/web (Frontend) csomagjai:
+Ide egy standard Next.js projekt kerül, kiegészítve a vizuális szerkesztővel.
+
+UI & Gráf: npm i next react react-dom @xyflow/react lucide-react
+
+Állapotkezelés (State): npm i zustand (Sokkal egyszerűbb a React Flow állapotának kezelésére, mint a Redux).
+
+Styling: npm i -D tailwindcss postcss autoprefixer
+
+Adatlekérés: npm i axios (vagy swr)
+
+3.3. /apps/api (Backend API) csomagjai:
+Ez felel a mentésért és a feladatok elindításáért.
+
+Web Server: npm i express cors dotenv
+
+Biztonság & Validáció: npm i helmet zod (A Zod a frontendről érkező JSON gráf validálására szolgál).
+
+Üzenetsor (Queue): npm i bullmq ioredis
+
+Fejlesztői eszközök: npm i -D @types/express @types/cors ts-node nodemon
+
+3.4. /apps/worker (Végrehajtó Motor) csomagjai:
+Ez a rendszer "agya", amely elvégzi az AI hívásokat.
+
+Üzenetsor feldolgozás: npm i bullmq ioredis
+
+AI SDK-k (Ingyenes tierhez): * npm i groq-sdk (Llama és Mixtral modellekhez)
+
+npm i @google/genai (Google Gemini 1.5 Flash használatához)
+
+Külső hívások: npm i axios
+
+(Opcionális, későbbre a RAG-hoz): npm i @pinecone-database/pinecone pdf-parse
+
+3.5. /packages/database (Adatbázis) csomagjai:
+ORM: npm i @prisma/client
+
+CLI: npm i -D prisma
+
+5. A Folyamat Logikája: Hogyan működik a DAG Executor?
+Mivel nem kell valós idejű WebSocket visszajelzés, a folyamat radikálisan leegyszerűsödik:
+
+Frontend indítás: A weblapon rányomsz a "Run Pipeline" gombra. A Next.js küld egy POST kérést az API-nak (/api/pipelines/:id/execute).
+
+API Szerver (apps/api): * Létrehoz egy új Execution rekordot az adatbázisban status: "PENDING" állapottal.
+
+Létrehoz egy Job-ot a Redis-ben a BullMQ segítségével: queue.add('execute-pipeline', { executionId, pipelineData }).
+
+Visszaadja a frontendnek a 200 OK-t és az executionId-t.
+
+Frontend várakozás (Polling): A React app egy setInterval segítségével (pl. 3 másodpercenként) lekérdezi az API-t: "Mi a helyzet ezzel az executionId-val?", és frissíti a UI-t, ha kész.
+
+A Worker (apps/worker):
+
+A BullMQ worker folyamatosan figyeli a Redis-t. Amikor észreveszi a job-ot, elkezdi a feldolgozást.
+
+Átállítja a DB-ben a státuszt RUNNING-ra.
+
+Topológiai rendezés (Topological Sort): A worker algoritmus megvizsgálja az edges (élek) JSON-t, és sorrendbe állítja a nodes (csomópontok) listáját úgy, hogy egy csomópont csak akkor fusson le, ha az összes bemeneti függősége már lefutott.
+
+State (Állapot) objektum inicializálása: Egy üres JavaScript objektum (pl. const context = {}), amibe a node-ok mentik a kimenetüket (pl. context['node_1'] = { output: "Hello" }).
+
+Léptetés: Egy for...of ciklussal végigmegy a sorba rendezett node-okon.
+
+Ha a node egy "Groq LLM", kiválasztja a bemeneti változókat a context-ből, elküldi a kérést az AI-nak, megvárja a választ, és elmenti a context-be a kimenetet.
+
+Befejezés: Ha minden node lefutott hiba nélkül, a teljes context objektumot beleírja a logs JSON mezőbe az adatbázisban, és a státuszt COMPLETED-re állítja. Ha valami elszáll (pl. API hiba), elkapja a catch ágban, beírja a hibát a logba, és a státusz FAILED lesz.
+
+6. Végrehajtási Sorrend (Tervezett Mérföldkövek)
+1. Lépés: Repó és Adatbázis (Alapozás)
+
+Inicializáld a Turborepót és a Prisma-t.
+
+Állítsd be a Supabase adatbázist és futtasd le a npx prisma db push parancsot a séma létrehozásához.
+
+Hozz létre egy "dummy" felhasználót közvetlenül a Supabase felületén (mivel egyelőre csak te használod, nem kell komplett regisztrációs flow-t építeni).
+
+2. Lépés: Frontend Vizuális Szerkesztő (A látvány)
+
+Készítsd el a /builder oldalt Next.js-ben a @xyflow/react használatával.
+
+Csinálj meg 3 alap csomópontot (Custom Nodes): TriggerNode (indítás), LLMNode (prompt beírása), OutputNode (eredmény megjelenítése).
+
+Érd el, hogy a gráf adatait (Nodes, Edges JSON) el lehessen menteni az API-n keresztül.
+
+3. Lépés: API és Sorba állítás (A híd)
+
+Állítsd be az Express szervert.
+
+Kösd be az Upstash Redis URL-t.
+
+Írd meg a végpontot, ami a bejövő futtatási kérést bedobja a BullMQ sorba.
+
+4. Lépés: Worker és AI integráció (Az agy)
+
+Írd meg a scriptet, ami kiolvassa a sorból a feladatot.
+
+Implementáld a Topológiai rendezést (erre vannak kész npm csomagok, pl. toposort, vagy megírható kézzel egy rekurzív függőség-kereső).
+
+Integráld a Groq SDK-t (ingyenes API kulccsal). Írd meg az LLMNode feldolgozó logikáját: fogadja a promptot, lefuttatja a Llama 3 modellt, és elmenti az eredményt.
+
+5. Lépés: Összekötés és Tesztelés
+
+Futtasd le az egész stack-et lokálisan (npm run dev a gyökérben, ami elindítja a frontendet, az api-t és a workert is).
+
+Építs egy pipeline-t a UI-on, nyomj a Run-ra, és nézd meg az adatbázisban, hogy a státusz COMPLETED-re vált-e, és megjelent-e a válasz a logokban.
+
+1. Az Adatstruktúra (A Gráf JSON reprezentációja)
+Meg kell terveznünk, hogyan néz ki egy Csomópont (Node) és egy Él (Edge) adatstruktúrája.
+
+Milyen mezői vannak egy LLM Node-nak? (pl. id, type, data: { prompt, model, temperature }).
+
+Hogyan tároljuk el, hogy melyik Node melyikbe csatlakozik?
+
+2. A Változók Feloldása (Variable Interpolation)
+Ez a rendszer legfontosabb logikai része. Ha van egy A csomópontod (pl. "Olvasd be ezt a szöveget"), és egy B csomópontod (pl. "Foglald össze az előző szöveget"), akkor a B csomópont promptjába hogyan hivatkozol az A-ra?
+
+Tervezési minta: Használjunk "Handlebars" stílusú szintaxist? Pl. a felhasználó ezt írja a Node-ba: "Kérlek foglald össze ezt: {{node_A.output.text}}".
+
+Hogyan cseréli ki ezt a rendszer a háttérben a tényleges szövegre a futtatás pillanatában?
+
+3. A Futtatási Algoritmus (DAG - Directed Acyclic Graph)
+Hogyan garantáljuk, hogy a csomópontok a megfelelő sorrendben fussanak le?
+
+Mi van akkor, ha a gráfban körkörös hivatkozás van (A -> B -> C -> A)? Ezt végtelen ciklust okozna. A tervezésnél ki kell találnunk, hogyan validáljuk a gráfot a mentés pillanatában, hogy ne lehessen benne "hurok".
+
+Párhuzamosítás: Ha egy trigger két független LLM Node-ot indít el egyszerre, hogyan tervezzük meg, hogy ezek párhuzamosan fussanak le, ne pedig egymásra várva?
+
+4. A "Context" (Állapot) Objektum Tervezése
+Amikor a Worker elkezdi futtatni a folyamatot, létrehoz egy üres memóriaterületet (Context). Ahogy a Node-ok lefutnak, ide mentik az eredményüket.
+Meg kell terveznünk, hogyan néz ki ez a JSON objektum a futás során, mert ez az objektum fog hízni a folyamat végéig, és ez lesz a végső "Log" is.
+
+5. Hibakezelés és Újrapróbálkozás (Error Handling & Retry Policy)
+Az AI API-k (mint a Groq vagy az OpenAI) időnként túlterheltek (503-as hiba) vagy túlléped a limitet (429-es hiba).
+
+Mit csináljon a rendszer? Dobja el az egész futtatást (Fail), vagy várjon 10 másodpercet és próbálja újra?
+
+Mi van, ha a felhasználó rossz API kulcsot adott meg, vagy szintaktikai hiba van a promptjában? Ezt hogyan adjuk vissza vizuálisan a frontendnek, hogy tudja, melyik Node-nál akadt el a folyamat?
+
+6. UI/UX Folyamat (User Flow)
+Bár a kódot nem írjuk, a képernyőket meg kell tervezni fejben (vagy papíron):
+
+Milyen panelek vannak a képernyőn? (Bal oldalt a Node lista, középen a Canvas, jobb oldalt a kiválasztott Node tulajdonságai?)
+
+Hogyan adja meg a felhasználó a globális beállításokat (pl. API kulcsok)?
