@@ -1,11 +1,11 @@
 # Feladatok
 
-- [ ] **Fázis 1: Projekt Inicializálás**
-    - [ ] Repo Létrehozása (`create-turbo`) <!-- id: 0 -->
-    - [ ] Alapvető Konfiguráció (package.json, turbo.json) <!-- id: 1 -->
-    - [ ] Mappaszerkezet Kialakítása <!-- id: 2 -->
-- [ ] **Fázis 2: Közös Csomagok**
-    - [ ] `packages/tsconfig` <!-- id: 3 -->
+- [x] **Fázis 1: Projekt Inicializálás**
+    - [x] Repo Létrehozása (`package.json`, `turbo.json`) <!-- id: 0 -->
+    - [x] Alapvető Konfiguráció (függőségek telepítése) <!-- id: 1 -->
+    - [x] Mappaszerkezet Kialakítása <!-- id: 2 -->
+- [/] **Fázis 2: Közös Csomagok**
+    - [/] `packages/tsconfig` <!-- id: 3 -->
     - [ ] `packages/types` (Zod, TS) <!-- id: 4 -->
     - [ ] `packages/database` (Prisma) <!-- id: 5 -->
 - [ ] **Fázis 3: Backend API**

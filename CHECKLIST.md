@@ -6,23 +6,23 @@ Ez a dokumentum lépésről lépésre vezeti végig a fejlesztést a `PROJECT_SP
 
 A projekt alapjainak lerakása Turborepo segítségével.
 
-- [ ] **Repo Létrehozása**
-  - [ ] Inicializálj egy új Turborepo projektet (`npx create-turbo@latest`).
-  - [ ] Válaszd az `npm` csomagkezelőt.
-  - [ ] Töröld ki a példa appokat (`apps/docs`, `apps/web`), hogy tiszta lappal indulj.
+- [x] **Repo Létrehozása**
+  - [x] Inicializálj egy új Turborepo projektet (`npx create-turbo@latest`).
+  - [x] Válaszd az `npm` csomagkezelőt.
+  - [x] Töröld ki a példa appokat (`apps/docs`, `apps/web`), hogy tiszta lappal indulj.
 
-- [ ] **Alapvető Konfiguráció**
-  - [ ] Állítsd be a gyökér `package.json`-t (projektnév, scriptek).
-  - [ ] Konfiguráld a `turbo.json`-t a build pipeline-hoz.
-  - [ ] Hozz létre egy `.gitignore` fájlt.
-  - [ ] **Root Dependencies**:
+- [x] **Alapvető Konfiguráció**
+  - [x] Állítsd be a gyökér `package.json`-t (projektnév, scriptek).
+  - [x] Konfiguráld a `turbo.json`-t a build pipeline-hoz.
+  - [x] Hozz létre egy `.gitignore` fájlt.
+  - [x] **Root Dependencies**:
     ```bash
     npm install -D -w turbo typescript eslint prettier
     ```
 
-- [ ] **Mappaszerkezet Kialakítása**
-  - [ ] Hozz létre üres mappákat: `apps/web`, `apps/api`, `apps/worker`.
-  - [ ] Hozz létre üres mappákat: `packages/database`, `packages/types`, `packages/tsconfig`.
+- [x] **Mappaszerkezet Kialakítása**
+  - [x] Hozz létre üres mappákat: `apps/web`, `apps/api`, `apps/worker`.
+  - [x] Hozz létre üres mappákat: `packages/database`, `packages/types`, `packages/tsconfig`.
 
 ## 2. Fázis: Közös Csomagok (Shared Packages)
 
