@@ -1,0 +1,23 @@
+# Feladatok
+
+- [ ] **Fázis 1: Projekt Inicializálás**
+    - [ ] Repo Létrehozása (`create-turbo`) <!-- id: 0 -->
+    - [ ] Alapvető Konfiguráció (package.json, turbo.json) <!-- id: 1 -->
+    - [ ] Mappaszerkezet Kialakítása <!-- id: 2 -->
+- [ ] **Fázis 2: Közös Csomagok**
+    - [ ] `packages/tsconfig` <!-- id: 3 -->
+    - [ ] `packages/types` (Zod, TS) <!-- id: 4 -->
+    - [ ] `packages/database` (Prisma) <!-- id: 5 -->
+- [ ] **Fázis 3: Backend API**
+    - [ ] Projekt Setup és Függőségek <!-- id: 6 -->
+    - [ ] Redis Kapcsolat <!-- id: 7 -->
+    - [ ] API Végpontok (Pipeline, Execute, **Admin**) <!-- id: 8 -->
+- [ ] **Fázis 4: Worker Service**
+    - [ ] Projekt Setup és Függőségek <!-- id: 9 -->
+    - [ ] Logika Implementálása (Queue, DAG, AI) <!-- id: 10 -->
+- [ ] **Fázis 5: Frontend**
+    - [ ] Projekt Setup és Függőségek <!-- id: 11 -->
+    - [ ] UI Implementáció (Builder, **Admin Dashboard**) <!-- id: 12 -->
+- [ ] **Fázis 6: Futtatás és Deploy**
+    - [ ] Scripts és Env változók <!-- id: 13 -->
+    - [ ] Deploy <!-- id: 14 -->
