@@ -31,7 +31,7 @@ A projekt alapjainak lerakása Turborepo segítségével.
 - [ ] Hozz létre `base.json`, `nextjs.json`, `node.json`.
 
 ### 2.2 `packages/types`
-- [ ] Inicializálás és függőségek:
+- [x] Inicializálás és függőségek:
   ```bash
   cd packages/types
   npm install zod
@@ -41,15 +41,15 @@ A projekt alapjainak lerakása Turborepo segítségével.
 - [ ] Buildeld le a csomagot.
 
 ### 2.3 `packages/database`
-- [ ] Inicializálás és függőségek:
+- [x] Inicializálás és függőségek:
   ```bash
   cd packages/database
   npm install @prisma/client
   npm install -D prisma typescript
   ```
-- [ ] Inicializáld a Prisma-t: `npx prisma init`.
-- [ ] Írd meg a `schema.prisma` fájlt.
-- [ ] Exportáld a klienst.
+- [x] Inicializáld a Prisma-t: `npx prisma init`.
+- [x] Írd meg a `schema.prisma` fájlt.
+- [x] Exportáld a klienst.
 
 ## 3. Fázis: Backend API (`apps/api`)
 
