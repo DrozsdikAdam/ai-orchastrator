@@ -4,6 +4,7 @@ import helmet from "helmet";
 import { env } from "./config/env";
 import authRoutes from "./routes/authRoutes";
 import pipelineRoutes from "./routes/pipelineRoutes";
+import executionRoutes from "./routes/executionRoutes";
 import { errorHandler } from "./middlewares/errorHandler";
 
 const app = express();
@@ -20,6 +21,7 @@ app.get("/health", (req, res) => {
 
 app.use("/auth", authRoutes);
 app.use("/pipelines", pipelineRoutes);
+app.use("/executions", executionRoutes);
 
 // Error Handling
 app.use(errorHandler);
