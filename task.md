@@ -4,14 +4,14 @@
     - [x] Repo Létrehozása (`package.json`, `turbo.json`) <!-- id: 0 -->
     - [x] Alapvető Konfiguráció (függőségek telepítése) <!-- id: 1 -->
     - [x] Mappaszerkezet Kialakítása <!-- id: 2 -->
-- [/] **Fázis 2: Közös Csomagok**
+- [x] **Fázis 2: Közös Csomagok**
     - [x] `packages/tsconfig` <!-- id: 3 -->
-    - [ ] `packages/types` (Zod, TS) <!-- id: 4 -->
+    - [x] `packages/types` (Zod, TS) <!-- id: 4 -->
     - [x] `packages/database` (Prisma) <!-- id: 5 -->
-- [ ] **Fázis 3: Backend API**
-    - [ ] Projekt Setup és Függőségek <!-- id: 6 -->
-    - [ ] Redis Kapcsolat <!-- id: 7 -->
-    - [ ] API Végpontok (Pipeline, Execute, **Admin**) <!-- id: 8 -->
+- [/] **Fázis 3: Backend API**
+    - [x] Projekt Setup és Függőségek <!-- id: 6 -->
+    - [x] Redis Kapcsolat <!-- id: 7 -->
+    - [/] API Végpontok (Pipeline, Execute, **Admin**) <!-- id: 8 -->
 - [ ] **Fázis 4: Worker Service**
     - [ ] Projekt Setup és Függőségek <!-- id: 9 -->
     - [ ] Logika Implementálása (Queue, DAG, AI) <!-- id: 10 -->
