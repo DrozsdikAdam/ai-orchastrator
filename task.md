@@ -8,10 +8,10 @@
     - [x] `packages/tsconfig` <!-- id: 3 -->
     - [x] `packages/types` (Zod, TS) <!-- id: 4 -->
     - [x] `packages/database` (Prisma) <!-- id: 5 -->
-- [/] **Fázis 3: Backend API**
+- [x] **Fázis 3: Backend API**
     - [x] Projekt Setup és Függőségek <!-- id: 6 -->
     - [x] Redis Kapcsolat <!-- id: 7 -->
-    - [x] API Végpontok (Auth (x), Pipeline (x), Execute (x), ApiKey (x)) <!-- id: 8 -->
+    - [x] API Végpontok (Auth (x), Pipeline (x), Execute (x), ApiKey (x), Admin (x)) <!-- id: 8 -->
     - [x] Dokumentáció Frissítése <!-- id: 101 -->
 - [ ] **Fázis 4: Worker Service**
     - [ ] Projekt Setup és Függőségek <!-- id: 9 -->

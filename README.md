@@ -76,6 +76,13 @@ A kész pipeline-ok elindításáért és a futási eredmények nyomon követés
 | `GET` | `/pipelines/:id/executions` | Egy pipeline korábbi futásainak listája |
 | `GET` | `/executions/:id` | Aktuális státusz, logok és eredmények |
 
+### 📊 Statisztikák (Stats)
+A dashboard megjelenítéséhez szükséges összesített adatok.
+
+| Metódus | Végpont | Leírás |
+| :--- | :--- | :--- |
+| `GET` | `/stats/dashboard` | Összesített statisztikák a bejelentkezett felhasználónak |
+
 ### 🛠️ Rendszer (System)
 Diagnosztikai és technikai végpontok.
 
