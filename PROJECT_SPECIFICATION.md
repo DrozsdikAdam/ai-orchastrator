@@ -316,9 +316,9 @@ A rendszer alapértelmezetten az alábbi ingyenesen vagy olcsón elérhető, mé
 ### 2. Fázis: Backend Core & Worker Logic (Folyamatban)
 *   [ ] **Redis Setup**: Upstash fiók és `bullmq` connection beállítása.
 *   [x] **Shared Types**: Zod sémák és alap típusok definiálása.
-*   [ ] **API Alapok**: Express szerver, Health check endpoint, Zod middleware.
-*   [ ] **Pipeline CRUD**: `POST /pipelines` (mentés), `GET /pipelines/:id` (betöltés).
-*   [ ] **Execution Endpoint**: `POST /execute` endpoint megírása (Job létrehozása).
+*   [x] **API Alapok**: Express szerver, Health check endpoint, Zod middleware.
+*   [x] **Pipeline CRUD**: `POST /pipelines` (mentés), `GET /pipelines/:id` (betöltés, lista, módosítás, törlés).
+*   [x] **Execution Endpoint**: `POST /execute` endpoint megírása (Job létrehozása + státusz/lista).
 *   [ ] **Worker Váz**: BullMQ Worker process elindítása, Job fogadása.
 *   [ ] **Topological Sort**: Algoritmus implementálása a `worker/src/engine` mappában.
 *   [ ] **Dummy Node**: Egy egyszerű "Console Log" node implementálása teszteléshez.
