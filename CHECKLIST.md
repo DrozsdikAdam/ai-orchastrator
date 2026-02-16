@@ -27,8 +27,8 @@ A projekt alapjainak lerakása Turborepo segítségével.
 ## 2. Fázis: Közös Csomagok (Shared Packages)
 
 ### 2.1 `packages/tsconfig`
-- [ ] Inicializálás (`npm init -y`)
-- [ ] Hozz létre `base.json`, `nextjs.json`, `node.json`.
+- [x] Inicializálás (`npm init -y`)
+- [x] Hozz létre `base.json`, `nextjs.json`, `node.json`.
 
 ### 2.2 `packages/types`
 - [x] Inicializálás és függőségek:
@@ -37,8 +37,8 @@ A projekt alapjainak lerakása Turborepo segítségével.
   npm install zod
   npm install -D typescript
   ```
-- [ ] Definiáld a Zod sémákat (`src/schemas.ts`) és TS interfészeket (`src/index.ts`).
-- [ ] Buildeld le a csomagot.
+- [x] Definiáld a Zod sémákat (`src/schemas/`) és TS interfészeket (`src/index.ts`).
+- [x] Domain-alapú fájlokra bontás (user, pipeline, execution, api).
 
 ### 2.3 `packages/database`
 - [x] Inicializálás és függőségek:
@@ -48,7 +48,8 @@ A projekt alapjainak lerakása Turborepo segítségével.
   npm install -D prisma typescript
   ```
 - [x] Inicializáld a Prisma-t: `npx prisma init`.
-- [x] Írd meg a `schema.prisma` fájlt.
+- [x] Írd meg a `schema.prisma` fájlt (felhasználó jelszóval bővítve).
+- [x] Migráció futtatása (`npx prisma migrate dev`).
 - [x] Exportáld a klienst.
 
 ## 3. Fázis: Backend API (`apps/api`)
