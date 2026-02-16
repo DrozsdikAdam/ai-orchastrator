@@ -6,6 +6,7 @@ import authRoutes from "./routes/authRoutes";
 import pipelineRoutes from "./routes/pipelineRoutes";
 import executionRoutes from "./routes/executionRoutes";
 import apiKeyRoutes from "./routes/apiKeyRoutes";
+import statsRoutes from "./routes/statsRoutes";
 import { errorHandler } from "./middlewares/errorHandler";
 
 const app = express();
@@ -24,6 +25,7 @@ app.use("/auth", authRoutes);
 app.use("/pipelines", pipelineRoutes);
 app.use("/executions", executionRoutes);
 app.use("/api-keys", apiKeyRoutes);
+app.use("/stats", statsRoutes);
 
 // Error Handling
 app.use(errorHandler);
