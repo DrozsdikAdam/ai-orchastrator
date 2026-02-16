@@ -3,6 +3,7 @@ import cors from "cors";
 import helmet from "helmet";
 import { env } from "./config/env";
 import authRoutes from "./routes/authRoutes";
+import pipelineRoutes from "./routes/pipelineRoutes";
 import { errorHandler } from "./middlewares/errorHandler";
 
 const app = express();
@@ -18,6 +19,7 @@ app.get("/health", (req, res) => {
 });
 
 app.use("/auth", authRoutes);
+app.use("/pipelines", pipelineRoutes);
 
 // Error Handling
 app.use(errorHandler);

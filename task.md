@@ -11,7 +11,7 @@
 - [/] **Fázis 3: Backend API**
     - [x] Projekt Setup és Függőségek <!-- id: 6 -->
     - [x] Redis Kapcsolat <!-- id: 7 -->
-    - [/] API Végpontok (Pipeline, Execute, **Admin**) <!-- id: 8 -->
+    - [/] API Végpontok (Pipeline (x), Execute, **Admin**) <!-- id: 8 -->
 - [ ] **Fázis 4: Worker Service**
     - [ ] Projekt Setup és Függőségek <!-- id: 9 -->
     - [ ] Logika Implementálása (Queue, DAG, AI) <!-- id: 10 -->
