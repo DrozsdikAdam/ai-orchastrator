@@ -1,6 +1,6 @@
 import { prisma } from "@repo/database";
 import { QueueService } from "./queueService";
-import { StatusCodes } from "http-status-codes";
+import { ApiError } from "../lib/apiError";
 
 export class ExecutionService {
      static async create(pipelineId: string, userId: string) {
@@ -10,9 +10,7 @@ export class ExecutionService {
           });
 
           if (!pipeline) {
-               const error: any = new Error("Pipeline nem található.");
-               error.statusCode = StatusCodes.NOT_FOUND;
-               throw error;
+               throw ApiError.notFound("Pipeline nem található.");
           }
 
           // Létrehozzuk az Execution rekordot
@@ -40,9 +38,7 @@ export class ExecutionService {
           });
 
           if (!execution) {
-               const error: any = new Error("Végrehajtás nem található.");
-               error.statusCode = StatusCodes.NOT_FOUND;
-               throw error;
+               throw ApiError.notFound("Execution nem található.");
           }
 
           return execution;

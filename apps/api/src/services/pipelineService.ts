@@ -1,6 +1,6 @@
 import { prisma } from "@repo/database";
 import { CreatePipelineRequest, UpdatePipelineRequest } from "@repo/types";
-import { StatusCodes } from "http-status-codes";
+import { ApiError } from "../lib/apiError";
 
 export class PipelineService {
      static async create(userId: string, data: CreatePipelineRequest) {
@@ -23,9 +23,7 @@ export class PipelineService {
           });
 
           if (!pipeline) {
-               const error: any = new Error("Pipeline nem található.");
-               error.statusCode = StatusCodes.NOT_FOUND;
-               throw error;
+               throw ApiError.notFound("Pipeline nem található.");
           }
 
           return pipeline;

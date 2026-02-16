@@ -1,7 +1,7 @@
 import { prisma } from "@repo/database";
 import { hashPassword, comparePassword, generateToken } from "../lib/auth";
 import { LoginRequest, RegisterRequest } from "@repo/types";
-import { StatusCodes } from "http-status-codes";
+import { ApiError } from "../lib/apiError";
 
 export class AuthService {
      static async register(data: RegisterRequest) {
@@ -10,9 +10,7 @@ export class AuthService {
           });
 
           if (existingUser) {
-               const error: any = new Error("Ez az email cím már foglalt.");
-               error.statusCode = StatusCodes.BAD_REQUEST;
-               throw error;
+               throw ApiError.badRequest("Ez az email cím már foglalt.");
           }
 
           const hashedPassword = await hashPassword(data.password);
@@ -36,17 +34,13 @@ export class AuthService {
           });
 
           if (!user) {
-               const error: any = new Error("Érvénytelen email vagy jelszó.");
-               error.statusCode = StatusCodes.UNAUTHORIZED;
-               throw error;
+               throw ApiError.unauthorized("Érvénytelen email vagy jelszó.");
           }
 
           const isPasswordValid = await comparePassword(data.password, user.password);
 
           if (!isPasswordValid) {
-               const error: any = new Error("Érvénytelen email vagy jelszó.");
-               error.statusCode = StatusCodes.UNAUTHORIZED;
-               throw error;
+               throw ApiError.unauthorized("Érvénytelen email vagy jelszó.");
           }
 
           const token = generateToken({ userId: user.id });

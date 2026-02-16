@@ -1,6 +1,6 @@
 import { prisma } from "@repo/database";
 import { CreateApiKeyRequest } from "@repo/types";
-import { StatusCodes } from "http-status-codes";
+import { ApiError } from "../lib/apiError";
 
 export class ApiKeyService {
      static async create(userId: string, data: CreateApiKeyRequest) {
@@ -43,9 +43,7 @@ export class ApiKeyService {
           });
 
           if (!key) {
-               const error: any = new Error("API kulcs nem található.");
-               error.statusCode = StatusCodes.NOT_FOUND;
-               throw error;
+               throw ApiError.notFound("API kulcs nem található.");
           }
 
           return prisma.apiKey.delete({
