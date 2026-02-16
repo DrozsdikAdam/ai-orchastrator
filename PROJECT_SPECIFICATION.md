@@ -306,15 +306,16 @@ A rendszer alapértelmezetten az alábbi ingyenesen vagy olcsón elérhető, mé
 ## 5. Részletes Végrehajtási Ütemterv (Roadmap)
 
 ### 1. Fázis: Projekt Inicializálás (Kész)
-*   [ ] **Repo Setup**: `npx create-turbo@latest`.
-*   [ ] **Package Config**: TypeScript, ESLint, Prettier beállítása a root-ban.
-*   [ ] **Apps Létrehozása**: Üres `web`, `api`, `worker` mappák inicializálása.
-*   [ ] **Shared Packages**: `database` és `types` csomagok létrehozása.
-*   [ ] **Adatbázis**: Supabase projekt létrehozása, Connection string beszerzése.
-*   [ ] **Prisma Init**: `schema.prisma` megírása és `npx prisma db push` futtatása.
+*   [x] **Repo Setup**: `npx create-turbo@latest`.
+*   [x] **Package Config**: TypeScript, ESLint, Prettier beállítása a root-ban.
+*   [x] **Apps Létrehozása**: Üres `web`, `api`, `worker` mappák inicializálása.
+*   [x] **Shared Packages**: `database` és `types` csomagok létrehozása.
+*   [x] **Adatbázis**: Supabase projekt létrehozása, Connection string beszerzése.
+*   [x] **Prisma Init**: `schema.prisma` megírása és `npx prisma db push` (vagy migrate) futtatása.
 
 ### 2. Fázis: Backend Core & Worker Logic (Folyamatban)
 *   [ ] **Redis Setup**: Upstash fiók és `bullmq` connection beállítása.
+*   [x] **Shared Types**: Zod sémák és alap típusok definiálása.
 *   [ ] **API Alapok**: Express szerver, Health check endpoint, Zod middleware.
 *   [ ] **Pipeline CRUD**: `POST /pipelines` (mentés), `GET /pipelines/:id` (betöltés).
 *   [ ] **Execution Endpoint**: `POST /execute` endpoint megírása (Job létrehozása).

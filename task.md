@@ -5,9 +5,9 @@
     - [x] Alapvető Konfiguráció (függőségek telepítése) <!-- id: 1 -->
     - [x] Mappaszerkezet Kialakítása <!-- id: 2 -->
 - [/] **Fázis 2: Közös Csomagok**
-    - [/] `packages/tsconfig` <!-- id: 3 -->
+    - [x] `packages/tsconfig` <!-- id: 3 -->
     - [ ] `packages/types` (Zod, TS) <!-- id: 4 -->
-    - [ ] `packages/database` (Prisma) <!-- id: 5 -->
+    - [x] `packages/database` (Prisma) <!-- id: 5 -->
 - [ ] **Fázis 3: Backend API**
     - [ ] Projekt Setup és Függőségek <!-- id: 6 -->
     - [ ] Redis Kapcsolat <!-- id: 7 -->
