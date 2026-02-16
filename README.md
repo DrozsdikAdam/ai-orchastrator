@@ -58,6 +58,15 @@ A munkafolyamatok (gráfok) létrehozására, szerkesztésére és tárolására
 | `PUT` | `/pipelines/:id` | Meglévő gráf módosítása |
 | `DELETE` | `/pipelines/:id` | Pipeline végleges törlése |
 
+### 🔑 API kulcsok (ApiKey)
+A saját AI szolgáltatók (pl. Groq, Gemini) kulcsainak biztonságos tárolására szolgáló végpontok.
+
+| Metódus | Végpont | Leírás |
+| :--- | :--- | :--- |
+| `POST` | `/api-keys` | Kulcs mentése vagy frissítése |
+| `GET` | `/api-keys` | Mentett szolgáltatók listázása (kulcs nélkül) |
+| `DELETE` | `/api-keys/:id` | API kulcs törlése |
+
 ### 🚀 Végrehajtás (Execution)
 A kész pipeline-ok elindításáért és a futási eredmények nyomon követéséért felelős végpontok.
 
