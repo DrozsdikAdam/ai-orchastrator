@@ -1,5 +1,5 @@
 import { prisma } from "@repo/database";
-import { pipelineQueue } from "../config/redis";
+import { QueueService } from "./queueService";
 import { StatusCodes } from "http-status-codes";
 
 export class ExecutionService {
@@ -23,11 +23,8 @@ export class ExecutionService {
                },
           });
 
-          // Hozzáadjuk a feladatot a Redis Queue-hoz a Worker számára
-          await pipelineQueue.add("execute", {
-               executionId: execution.id,
-               pipelineId: pipeline.id,
-          });
+          // Hozzáadjuk a feladatot a Redis Queue-hoz a Worker számára a QueueService-en keresztül
+          await QueueService.enqueueExecution(execution.id, pipeline.id);
 
           return execution;
      }
