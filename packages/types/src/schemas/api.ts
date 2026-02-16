@@ -17,3 +17,9 @@ export const ExecutePipelineRequestSchema = z.object({
 export type ExecutePipelineRequest = z.infer<
      typeof ExecutePipelineRequestSchema
 >;
+
+export const CreateApiKeyRequestSchema = z.object({
+     provider: z.string().min(1, "A szolgáltató megadása kötelező."),
+     key: z.string().min(1, "Az API kulcs megadása kötelező."),
+});
+export type CreateApiKeyRequest = z.infer<typeof CreateApiKeyRequestSchema>;
