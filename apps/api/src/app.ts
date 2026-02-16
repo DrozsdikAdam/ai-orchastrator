@@ -5,6 +5,7 @@ import { env } from "./config/env";
 import authRoutes from "./routes/authRoutes";
 import pipelineRoutes from "./routes/pipelineRoutes";
 import executionRoutes from "./routes/executionRoutes";
+import apiKeyRoutes from "./routes/apiKeyRoutes";
 import { errorHandler } from "./middlewares/errorHandler";
 
 const app = express();
@@ -22,6 +23,7 @@ app.get("/health", (req, res) => {
 app.use("/auth", authRoutes);
 app.use("/pipelines", pipelineRoutes);
 app.use("/executions", executionRoutes);
+app.use("/api-keys", apiKeyRoutes);
 
 // Error Handling
 app.use(errorHandler);
