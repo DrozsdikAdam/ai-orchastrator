@@ -12,6 +12,7 @@ export const auth = (req: AuthRequest, res: Response, next: NextFunction) => {
 
      if (!authHeader || !authHeader.startsWith("Bearer ")) {
           res.status(StatusCodes.UNAUTHORIZED).json({
+               success: false,
                error: "Unauthorized",
                message: "Hiányzó vagy érvénytelen token."
           })
@@ -26,9 +27,9 @@ export const auth = (req: AuthRequest, res: Response, next: NextFunction) => {
           next()
      } catch (error) {
           res.status(StatusCodes.UNAUTHORIZED).json({
+               success: false,
                error: "Unauthorized",
                message: "Érvénytelen vagy lejárt token."
           });
      }
 }
-
