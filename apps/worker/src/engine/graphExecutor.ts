@@ -1,7 +1,8 @@
 import { prisma } from "@repo/database";
 import { topologicalSort } from "./topologicalSort";
 import { resolveObjectVariables } from "./variableResolver";
-import { Node as FlowNode, Edge as FlowEdge, PipelineDefinition } from "@repo/types";
+import { PipelineDefinition } from "@repo/types";
+import { nodeHandler } from "../nodes";
 
 export const executeGraph = async (executionId: string, pipelineId: string) => {
      const pipeline = await prisma.pipeline.findFirst({
@@ -31,11 +32,12 @@ export const executeGraph = async (executionId: string, pipelineId: string) => {
 
           const context: Record<string, any> = {};
 
-          sortedNodes.forEach(node => {
-               const resolvedNode = resolveObjectVariables(node.data, context);
-               const result = { output: "mock" }
+          for (const node of sortedNodes) {
+               const resolvedData = resolveObjectVariables(node.data, context);
+               const handler = nodeHandler(node.type);
+               const result = await handler(resolvedData, context);
                context[node.id] = result;
-          })
+          }
 
           await prisma.execution.update({
                where: {
