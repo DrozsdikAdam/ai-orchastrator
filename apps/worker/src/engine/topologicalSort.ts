@@ -1,8 +1,6 @@
 import { Node as FlowNode, Edge as FlowEdge } from "@repo/types";
 
-
-
-const topologicalSort = (nodes: FlowNode[], edges: FlowEdge[]): FlowNode[] => {
+export const topologicalSort = (nodes: FlowNode[], edges: FlowEdge[]): FlowNode[] => {
      const inDegree = new Map<string, number>();
      const adjacency = new Map<string, string[]>();
 
