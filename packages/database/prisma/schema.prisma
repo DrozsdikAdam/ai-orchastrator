@@ -1,0 +1,59 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        String     @id @default(uuid())
+  email     String     @unique
+  name      String?
+  password  String
+  apiKeys   ApiKey[]
+  pipelines Pipeline[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model ApiKey {
+  id        String   @id @default(uuid())
+  key       String // Encrypted
+  provider  String // "openai", "groq", etc.
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+model Pipeline {
+  id          String      @id @default(uuid())
+  name        String
+  description String?
+  definition  Json // Stores the React Flow nodes & edges
+  isPublic    Boolean     @default(false)
+  userId      String
+  user        User        @relation(fields: [userId], references: [id])
+  executions  Execution[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model Execution {
+  id         String          @id @default(uuid())
+  status     ExecutionStatus @default(PENDING)
+  logs       Json? // Stores the execution context/results
+  error      String?
+  startedAt  DateTime        @default(now())
+  finishedAt DateTime?
+  pipelineId String
+  pipeline   Pipeline        @relation(fields: [pipelineId], references: [id])
+}
+
+enum ExecutionStatus {
+  PENDING
+  RUNNING
+  COMPLETED
+  FAILED
+}
