@@ -1,3 +1,16 @@
+/* React Flow default node wrapper eltüntetése */
+.react-flow__node-trigger,
+.react-flow__node-llm,
+.react-flow__node-http,
+.react-flow__node-logic,
+.react-flow__node-output {
+    padding: 0 !important;
+    border: none !important;
+    background: transparent !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+}
+
 .custom-handle {
     width: 12px !important;
     height: 12px !important;
