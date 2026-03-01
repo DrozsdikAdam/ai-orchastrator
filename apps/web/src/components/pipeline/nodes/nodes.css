@@ -1,0 +1,74 @@
+.custom-handle {
+    width: 12px !important;
+    height: 12px !important;
+    border-radius: 50% !important;
+    border: 2px solid #45475a !important;
+    background: #313244 !important;
+    transition: all 0.2s ease;
+}
+
+.custom-handle:hover {
+    transform: scale(1.4);
+    box-shadow: 0 0 10px rgba(137, 180, 250, 0.5);
+}
+
+/* Trigger — Zöld */
+.node-trigger {
+    border-color: #a6e3a1;
+}
+
+.node-trigger .custom-handle {
+    background: #a6e3a1 !important;
+    border-color: #40a02b !important;
+}
+
+/* LLM — Lila */
+.node-llm {
+    border-color: #cba6f7;
+}
+
+.node-llm .custom-handle {
+    background: #cba6f7 !important;
+    border-color: #8839ef !important;
+}
+
+/* HTTP — Kék */
+.node-http {
+    border-color: #89b4fa;
+}
+
+.node-http .custom-handle {
+    background: #89b4fa !important;
+    border-color: #1e66f5 !important;
+}
+
+/* Logic — Narancs */
+.node-logic {
+    border-color: #fab387;
+}
+
+.node-logic .handle-true {
+    background: #a6e3a1 !important;
+    border-color: #40a02b !important;
+}
+
+.node-logic .handle-false {
+    background: #f38ba8 !important;
+    border-color: #d20f39 !important;
+}
+
+/* Output — Rózsaszín */
+.node-output {
+    border-color: #f38ba8;
+}
+
+.node-output .custom-handle {
+    background: #f38ba8 !important;
+    border-color: #d20f39 !important;
+}
+
+/* Error handle (HTTP-nél) */
+.handle-error {
+    background: #f38ba8 !important;
+    border-color: #d20f39 !important;
+}
