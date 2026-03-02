@@ -10,7 +10,7 @@ Ez egy modern, mesterséges intelligencia munkafolyamatokat kezelő platform, am
 | Közös Csomagok (types, database, tsconfig) | ✅ Kész |
 | Backend API | ✅ Kész |
 | Worker Service | ✅ Kész |
-| Frontend (Next.js) | 🔄 Fejlesztés alatt |
+| Frontend (Next.js) | 🔄 Fejlesztés alatt (`frontEnd` branch) |
 | Deploy | ⏳ Tervezve |
 
 ---
@@ -128,6 +128,34 @@ A Worker a BullMQ queue-ból érkező feladatokat dolgozza fel.
 
 ---
 
+## Frontend (`apps/web`) – `frontEnd` branch
+
+A frontend egy Next.js 16 (App Router) alkalmazás React Flow alapú pipeline szerkesztővel.
+
+### Implementált funkciók
+- **Pipeline Szerkesztő** – React Flow canvas drag & drop node hozzáadással
+- **Zustand Store** – centralizált gráfállapot (nodes, edges, CRUD műveletek)
+- **Sidebar** – Catppuccin témájú node paletta Lucide ikonokkal
+- **Custom Node-ok** – 5 egyedi node típus saját Handle-ökkel:
+
+| Node | Ikonok | Bemenetek | Kimenetek |
+| :--- | :--- | :--- | :--- |
+| TriggerNode | ⚡ Zap | – | 1 (Right) |
+| LLMNode | 🧠 Brain | 2 (prompt, context) | 1 (output) |
+| HttpNode | 🌐 Globe | 1 (Left) | 2 (response, error) |
+| LogicNode | 🔀 GitBranch | 1 (Left) | 2 (true, false) |
+| OutputNode | 🖥️ Monitor | 2 (Left) | – |
+
+### Felhasznált technológiák
+- Next.js 16 (App Router, Turbopack)
+- React Flow (`@xyflow/react`)
+- Zustand (state management)
+- TanStack Query (server state – előkészítve)
+- TailwindCSS v4 + Shadcn/UI
+- Lucide React (ikonok)
+
+---
+
 ## Fejlesztés
 
 ### Követelmények
@@ -175,3 +203,9 @@ npx prisma generate
 # Prisma migráció
 npx prisma migrate dev
 ```
+
+### Git Branch-ek
+| Branch | Leírás |
+| :--- | :--- |
+| `development` | Stabil fejlesztői branch (API + Worker) |
+| `frontEnd` | Frontend fejlesztés (pipeline szerkesztő) |
