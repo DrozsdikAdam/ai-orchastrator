@@ -68,6 +68,38 @@ export default function NodeEditor() {
                          </div>
                     </div>
                )}
+               {node.type === 'http' && (
+                    <div>
+                         <div className="my-4 flex items-center">
+                              <h3>HTTP Node</h3>
+                         </div>
+                         <div>
+                              <label htmlFor="name">Name</label>
+                              <input className="bg-white/5 border border-white/[0.08] rounded-md px-2.5 py-1.5 text-[#cdd6f4] w-full text-[13px] outline-none focus:border-[#89b4fa]" type="text" name="name" id="name" value={(node.data.name as string) ?? ''} onChange={(e) => updateNodeData(node.id, { name: e.target.value })} />
+                         </div>
+                         <div>
+                              <label htmlFor="url">URL</label>
+                              <input className="bg-white/5 border border-white/[0.08] rounded-md px-2.5 py-1.5 text-[#cdd6f4] w-full text-[13px] outline-none focus:border-[#89b4fa]" type="text" name="url" id="url" value={(node.data.url as string) ?? ''} onChange={(e) => updateNodeData(node.id, { url: e.target.value })} />
+                         </div>
+                         <div>
+                              <label htmlFor="method">Method</label>
+                              <select className="bg-white/5 border border-white/[0.08] rounded-md px-2.5 py-1.5 text-[#cdd6f4] w-full text-[13px] outline-none focus:border-[#89b4fa]" name="method" id="method" value={(node.data.method as string) ?? ''} onChange={(e) => updateNodeData(node.id, { method: e.target.value })}>
+                                   <option value="GET">GET</option>
+                                   <option value="POST">POST</option>
+                                   <option value="PUT">PUT</option>
+                                   <option value="DELETE">DELETE</option>
+                              </select>
+                         </div>
+                         <div>
+                              <label htmlFor="headers">Headers</label>
+                              <input className="bg-white/5 border border-white/[0.08] rounded-md px-2.5 py-1.5 text-[#cdd6f4] w-full text-[13px] outline-none focus:border-[#89b4fa]" type="text" name="headers" id="headers" value={(node.data.headers as string) ?? ''} onChange={(e) => updateNodeData(node.id, { headers: e.target.value })} />
+                         </div>
+                         <div>
+                              <label htmlFor="body">Body</label>
+                              <textarea className="bg-white/5 border border-white/[0.08] rounded-md px-2.5 py-1.5 text-[#cdd6f4] w-full text-[13px] outline-none focus:border-[#89b4fa]" name="body" id="body" value={(node.data.body as string) ?? ''} onChange={(e) => updateNodeData(node.id, { body: e.target.value })} />
+                         </div>
+                    </div>
+               )}
 
                <div className="mt-6 pt-4 flex justify-between items-center border-t border-white/10">
                     <button
