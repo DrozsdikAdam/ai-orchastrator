@@ -100,6 +100,36 @@ export default function NodeEditor() {
                          </div>
                     </div>
                )}
+               {node.type === 'logic' && (
+                    <div>
+                         <div className="my-4 flex items-center">
+                              <h3>Logic Node</h3>
+                         </div>
+                         <div>
+                              <label htmlFor="name">Name</label>
+                              <input className="bg-white/5 border border-white/[0.08] rounded-md px-2.5 py-1.5 text-[#cdd6f4] w-full text-[13px] outline-none focus:border-[#89b4fa]" type="text" name="name" id="name" value={(node.data.name as string) ?? ''} onChange={(e) => updateNodeData(node.id, { name: e.target.value })} />
+                         </div>
+                         <div>
+                              <label htmlFor="condition">Condition</label>
+                              <input className="bg-white/5 border border-white/[0.08] rounded-md px-2.5 py-1.5 text-[#cdd6f4] w-full text-[13px] outline-none focus:border-[#89b4fa]" type="text" name="condition" id="condition" value={(node.data.condition as string) ?? ''} onChange={(e) => updateNodeData(node.id, { condition: e.target.value })} />
+                         </div>
+                    </div>
+               )}
+               {node.type === 'output' && (
+                    <div>
+                         <div className="my-4 flex items-center">
+                              <h3>Output Node</h3>
+                         </div>
+                         <div>
+                              <label htmlFor="name">Name</label>
+                              <input className="bg-white/5 border border-white/[0.08] rounded-md px-2.5 py-1.5 text-[#cdd6f4] w-full text-[13px] outline-none focus:border-[#89b4fa]" type="text" name="name" id="name" value={(node.data.name as string) ?? ''} onChange={(e) => updateNodeData(node.id, { name: e.target.value })} />
+                         </div>
+                         <div>
+                              <label htmlFor="value">Value</label>
+                              <input className="bg-white/5 border border-white/[0.08] rounded-md px-2.5 py-1.5 text-[#cdd6f4] w-full text-[13px] outline-none focus:border-[#89b4fa]" type="text" name="value" id="value" value={(node.data.value as string) ?? ''} onChange={(e) => updateNodeData(node.id, { value: e.target.value })} />
+                         </div>
+                    </div>
+               )}
 
                <div className="mt-6 pt-4 flex justify-between items-center border-t border-white/10">
                     <button
