@@ -38,6 +38,12 @@ function PipelineEditorInner() {
           const defaultData: Record<string, any> = { label: type };
           if (type === 'trigger') {
                defaultData.triggerType = 'webhook';
+          } else if (type === 'llm') {
+               defaultData.model = 'gpt-4o';
+               defaultData.temperature = 0.7;
+               defaultData.maxTokens = 1024;
+          } else if (type === 'http') {
+               defaultData.method = 'GET';
           }
           addNode({ id: `${type}_${Date.now()}`, type, position, data: defaultData });
      }, [addNode, screenToFlowPosition]);
