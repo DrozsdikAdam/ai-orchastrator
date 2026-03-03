@@ -47,6 +47,24 @@ export default function NodeEditor() {
                               <input className="bg-white/5 border border-white/[0.08] rounded-md px-2.5 py-1.5 text-[#cdd6f4] w-full text-[13px] outline-none focus:border-[#89b4fa]" type="text" name="name" id="name" value={(node.data.name as string) ?? ''} onChange={(e) => updateNodeData(node.id, { name: e.target.value })} />
                          </div>
                          <div>
+                              <label htmlFor="model">Model</label>
+                              <select className="bg-white/5 border border-white/[0.08] rounded-md px-2.5 py-1.5 text-[#cdd6f4] w-full text-[13px] outline-none focus:border-[#89b4fa]" name="model" id="model" value={(node.data.model as string) ?? ''} onChange={(e) => updateNodeData(node.id, { model: e.target.value })}>
+                                   <option value="gpt-4o">GPT-4o</option>
+                                   <option value="gpt-4o-mini">GPT-4o-mini</option>
+                                   <option value="gpt-3.5-turbo">GPT-3.5-turbo</option>
+                              </select>
+                         </div>
+                         <div>
+                              <label htmlFor="temperature">Temperature</label>
+                              <input className="bg-white/5 border border-white/[0.08] rounded-md px-2.5 py-1.5 text-[#cdd6f4] w-full text-[13px] outline-none focus:border-[#89b4fa]" type="number" name="temperature" id="temperature" value={(node.data.temperature as number) ?? ''} onChange={(e) => updateNodeData(node.id, { temperature: e.target.value })} />
+                         </div>
+                         <div>
+                              <label htmlFor="maxTokens">Max Tokens</label>
+                              <input className="bg-white/5 border border-white/[0.08] rounded-md px-2.5 py-1.5 text-[#cdd6f4] w-full text-[13px] outline-none focus:border-[#89b4fa]" type="number" name="maxTokens" id="maxTokens" value={(node.data.maxTokens as number) ?? ''} onChange={(e) => updateNodeData(node.id, { maxTokens: e.target.value })} />
+                         </div>
+                         <div>
+                              <label htmlFor="prompt">Prompt</label>
+                              <textarea className="bg-white/5 border border-white/[0.08] rounded-md px-2.5 py-1.5 text-[#cdd6f4] w-full text-[13px] outline-none focus:border-[#89b4fa]" name="prompt" id="prompt" value={(node.data.prompt as string) ?? ''} onChange={(e) => updateNodeData(node.id, { prompt: e.target.value })} />
                          </div>
                     </div>
                )}
