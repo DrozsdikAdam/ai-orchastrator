@@ -35,7 +35,11 @@ function PipelineEditorInner() {
           const type = e.dataTransfer.getData("application/reactflow");
           if (!type) return;
           const position = screenToFlowPosition({ x: e.clientX, y: e.clientY });
-          addNode({ id: `${type}_${Date.now()}`, type, position, data: { label: type } });
+          const defaultData: Record<string, any> = { label: type };
+          if (type === 'trigger') {
+               defaultData.triggerType = 'webhook';
+          }
+          addNode({ id: `${type}_${Date.now()}`, type, position, data: defaultData });
      }, [addNode, screenToFlowPosition]);
 
      return (
