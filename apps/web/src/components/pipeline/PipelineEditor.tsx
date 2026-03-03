@@ -4,6 +4,7 @@ import { usePipelineStore } from "@/store/pipelineStore";
 import { ReactFlowProvider } from "@xyflow/react";
 import { useCallback, useRef } from "react";
 import PipelineSidebar from "./sidebar";
+import NodeEditor from "./NodeEditor";
 import { useReactFlow } from "@xyflow/react";
 import { TriggerNode } from "./nodes/TriggerNode";
 import { LLMNode } from "./nodes/LLMNode";
@@ -21,7 +22,7 @@ const nodeTypes = {
 }
 
 function PipelineEditorInner() {
-     const { nodes, edges, onNodesChange, onEdgesChange, onConnect, addNode } = usePipelineStore();
+     const { nodes, edges, onNodesChange, onEdgesChange, onConnect, addNode, selectNode } = usePipelineStore();
      const reactFlowWrapper = useRef<HTMLDivElement>(null);
      const { screenToFlowPosition } = useReactFlow();
 
@@ -61,6 +62,7 @@ function PipelineEditorInner() {
                          onConnect={onConnect}
                          onDrop={onDrop}
                          onDragOver={onDragOver}
+                         onNodeClick={(_, node) => selectNode(node.id)}
                          fitView
                     >
                          <Background />
@@ -68,6 +70,7 @@ function PipelineEditorInner() {
                          <MiniMap />
                     </ReactFlow>
                </div>
+               <NodeEditor />
           </div>
      )
 }

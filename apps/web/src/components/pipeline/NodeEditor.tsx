@@ -1,17 +1,33 @@
 import { usePipelineStore } from "@/store/pipelineStore";
 import { X } from "lucide-react"
+import { useState, useEffect } from "react"
 
 export default function NodeEditor() {
      const { nodes, selectedNodeId, selectNode, updateNodeData } = usePipelineStore();
      const node = nodes.find(n => n.id === selectedNodeId);
+     const [originalData, setOriginalData] = useState<Record<string, any> | null>(null);
+
+     useEffect(() => {
+          if (node) {
+               setOriginalData({ ...node.data });
+          }
+     }, [selectedNodeId]);
+
      if (!node) return null;
 
+     const handleDiscard = () => {
+          if (originalData) {
+               updateNodeData(node.id, originalData);
+          }
+          selectNode(null);
+     };
+
      return (
-          <div className="w-80 bg-[#11111b] border-1 border-white/10 p-4 h-screen overflow-y-auto">
+          <div className="w-80 bg-[#11111b] border-1 border-white/10 p-4 h-screen overflow-y-auto text-[#cdd6f4]">
                <div className="flex items-center justify-between mb-4">
                     <h2 className="text-lg font-semibold">Node Editor</h2>
                     <button onClick={() => selectNode(null)}>
-                         <X className="w-6 h-6" size={16} />
+                         <X className="w-5 h-5 transition-colors duration-200 hover:text-red-400" />
                     </button>
                </div>
                {node.type === 'trigger' && (
@@ -24,6 +40,7 @@ export default function NodeEditor() {
                               <input className="bg-white/5 border border-white/[0.08] rounded-md px-2.5 py-1.5 text-[#cdd6f4] w-full text-[13px] outline-none focus:border-[#89b4fa]" type="text" name="triggerName" id="triggerName" value={(node.data.name as string) ?? ''} onChange={(e) => updateNodeData(node.id, { name: e.target.value })} />
                          </div>
                          <div>
+                              <label htmlFor="triggerType">Trigger típus</label>
                               <select className="bg-white/5 border border-white/[0.08] rounded-md px-2.5 py-1.5 text-[#cdd6f4] w-full text-[13px] outline-none focus:border-[#89b4fa]" name="triggerType" value={node.data.triggerType as string} onChange={(e) => updateNodeData(node.id, { triggerType: e.target.value })} id="triggerType">
                                    <option value="webhook">Webhook</option>
                                    <option value="manual">Manual</option>
@@ -125,24 +142,30 @@ export default function NodeEditor() {
                               <input className="bg-white/5 border border-white/[0.08] rounded-md px-2.5 py-1.5 text-[#cdd6f4] w-full text-[13px] outline-none focus:border-[#89b4fa]" type="text" name="outputName" id="outputName" value={(node.data.name as string) ?? ''} onChange={(e) => updateNodeData(node.id, { name: e.target.value })} />
                          </div>
                          <div>
-                              <label htmlFor="outputValue">Value</label>
-                              <input className="bg-white/5 border border-white/[0.08] rounded-md px-2.5 py-1.5 text-[#cdd6f4] w-full text-[13px] outline-none focus:border-[#89b4fa]" type="text" name="outputValue" id="outputValue" value={(node.data.value as string) ?? ''} onChange={(e) => updateNodeData(node.id, { value: e.target.value })} />
+                              <label htmlFor="outputVariable">Output változó</label>
+                              <input className="bg-white/5 border border-white/[0.08] rounded-md px-2.5 py-1.5 text-[#cdd6f4] w-full text-[13px] outline-none focus:border-[#89b4fa]" type="text" name="outputVariable" id="outputVariable" placeholder="pl. {{llm_1.response}}" value={(node.data.outputVariable as string) ?? ''} onChange={(e) => updateNodeData(node.id, { outputVariable: e.target.value })} />
+                         </div>
+                         <div>
+                              <label htmlFor="outputFormat">Output formátum</label>
+                              <select className="bg-white/5 border border-white/[0.08] rounded-md px-2.5 py-1.5 text-[#cdd6f4] w-full text-[13px] outline-none focus:border-[#89b4fa]" name="outputFormat" id="outputFormat" value={(node.data.outputFormat as string) ?? 'json'} onChange={(e) => updateNodeData(node.id, { outputFormat: e.target.value })}>
+                                   <option value="json">JSON</option>
+                                   <option value="text">Szöveg</option>
+                                   <option value="html">HTML</option>
+                              </select>
                          </div>
                     </div>
                )}
 
-               <div className="mt-6 pt-4 flex justify-between items-center border-t border-white/10">
+               <div className="mt-6 pt-4 flex gap-3 border-t border-white/10">
                     <button
-                         onClick={() => selectNode(null)}
-                         className="w-full bg-red-700 hover:bg-red-600 text-white 
-               font-semibold py-2 px-4 rounded-lg transition-colors duration-200"
+                         onClick={handleDiscard}
+                         className="flex-1 border border-white/10 hover:border-red-500/50 hover:bg-red-500/10 text-[#a6adc8] hover:text-red-400 font-medium py-2 px-4 rounded-lg transition-all duration-200 text-[13px]"
                     >
                          Elvetés
                     </button>
                     <button
                          onClick={() => selectNode(null)}
-                         className="w-full bg-[#89b4fa] hover:bg-[#74a3f0] text-[#1e1e2e] 
-               font-semibold py-2 px-4 rounded-lg transition-colors duration-200"
+                         className="flex-1 bg-[#89b4fa] hover:bg-[#74a3f0] text-[#1e1e2e] font-semibold py-2 px-4 rounded-lg transition-all duration-200 text-[13px] shadow-md shadow-[#89b4fa]/20 hover:shadow-lg hover:shadow-[#89b4fa]/30"
                     >
                          Mentés
                     </button>

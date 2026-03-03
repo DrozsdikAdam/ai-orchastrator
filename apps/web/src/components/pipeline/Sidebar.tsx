@@ -65,14 +65,9 @@ export default function PipelineSidebar() {
                               draggable
                               key={node.type}
                               onDragStart={(e) => onDragStart(e, node.type)}
-                              className="rounded-xl bg-[#1e1e2e] border border-white/10 shadow-md
-                                   cursor-grab active:cursor-grabbing mb-3
-                                   transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg hover:border-white/20"
+                              className="rounded-xl bg-[#1e1e2e] border border-white/10 shadow-md cursor-grab active:cursor-grabbing mb-3 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg hover:border-white/20"
                          >
-                              <div className={`flex items-center gap-2 px-3 py-2.5 rounded-t-xl
-                                   ${node.headerBg} ${node.headerText}
-                                   text-[13px] font-semibold uppercase tracking-wide`}
-                              >
+                              <div className={`flex items-center gap-2 px-3 py-2.5 rounded-t-xl ${node.headerBg} ${node.headerText} text-[13px] font-semibold uppercase tracking-wide`}>
                                    <div className="flex items-center justify-center w-7 h-7 rounded-lg bg-white/10">
                                         <Icon size={16} />
                                    </div>
