@@ -26,7 +26,12 @@
 - [/] **Fázis 5: Frontend**
     - [x] Projekt Setup (Next.js 16, Tailwind v4, Shadcn/UI) <!-- id: 11 -->
     - [x] Függőségek (@xyflow/react, Zustand, TanStack Query) <!-- id: 21 -->
-    - [ ] Pipeline Szerkesztő (React Flow) <!-- id: 22 -->
+    - [/] Pipeline Szerkesztő (React Flow) <!-- id: 22 -->
+        - [x] Zustand Store (pipelineStore.ts)
+        - [x] PipelineEditor komponens (ReactFlow + drag & drop)
+        - [x] Sidebar (node paletta, Catppuccin téma)
+        - [x] Custom Node-ok (Trigger, LLM, HTTP, Logic, Output)
+        - [ ] Node szerkesztő panel (properties)
     - [ ] Auth Oldalak (Login, Register) <!-- id: 23 -->
     - [ ] Dashboard <!-- id: 24 -->
     - [ ] Pipeline Lista <!-- id: 25 -->
