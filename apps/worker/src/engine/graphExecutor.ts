@@ -5,17 +5,17 @@ import { PipelineDefinition } from "@repo/types";
 import { nodeHandler } from "../nodes";
 
 export const executeGraph = async (executionId: string, pipelineId: string) => {
-     const pipeline = await prisma.pipeline.findFirst({
-          where: {
-               id: pipelineId
-          }
-     })
-
-     if (!pipeline) {
-          throw new Error("Pipeline not found!");
-     }
-
      try {
+          const pipeline = await prisma.pipeline.findFirst({
+               where: {
+                    id: pipelineId
+               }
+          })
+
+          if (!pipeline) {
+               throw new Error("Pipeline nem található.");
+          }
+
           await prisma.execution.update({
                where: {
                     id: executionId
@@ -62,6 +62,4 @@ export const executeGraph = async (executionId: string, pipelineId: string) => {
                }
           })
      }
-
-
 }

@@ -11,14 +11,32 @@
 - [x] **Fázis 3: Backend API**
     - [x] Projekt Setup és Függőségek <!-- id: 6 -->
     - [x] Redis Kapcsolat <!-- id: 7 -->
-    - [x] API Végpontok (Auth (x), Pipeline (x), Execute (x), ApiKey (x), Admin (x)) <!-- id: 8 -->
+    - [x] API Végpontok (Auth, Pipeline, Execute, ApiKey, Stats) <!-- id: 8 -->
+    - [x] Standardizált hibakezelés (ApiError) <!-- id: 100 -->
     - [x] Dokumentáció Frissítése <!-- id: 101 -->
-- [ ] **Fázis 4: Worker Service**
-    - [ ] Projekt Setup és Függőségek <!-- id: 9 -->
-    - [ ] Logika Implementálása (Queue, DAG, AI) <!-- id: 10 -->
-- [ ] **Fázis 5: Frontend**
-    - [ ] Projekt Setup és Függőségek <!-- id: 11 -->
-    - [ ] UI Implementáció (Builder, **Admin Dashboard**) <!-- id: 12 -->
+- [x] **Fázis 4: Worker Service**
+    - [x] Projekt Setup és Függőségek <!-- id: 9 -->
+    - [x] Konfiguráció (env.ts, redis.ts) <!-- id: 15 -->
+    - [x] Topológiai Rendezés (Kahn-algoritmus) <!-- id: 16 -->
+    - [x] Változó Feloldás (variableResolver) <!-- id: 17 -->
+    - [x] Gráf Végrehajtó (graphExecutor) <!-- id: 18 -->
+    - [x] Node Handler Registry (mock) <!-- id: 19 -->
+    - [x] Worker Entry Point (BullMQ) <!-- id: 20 -->
+    - [ ] Valós Node Handler-ek (LLM, HTTP, Logic) <!-- id: 10 -->
+- [/] **Fázis 5: Frontend**
+    - [x] Projekt Setup (Next.js 16, Tailwind v4, Shadcn/UI) <!-- id: 11 -->
+    - [x] Függőségek (@xyflow/react, Zustand, TanStack Query) <!-- id: 21 -->
+    - [/] Pipeline Szerkesztő (React Flow) <!-- id: 22 -->
+        - [x] Zustand Store (pipelineStore.ts)
+        - [x] PipelineEditor komponens (ReactFlow + drag & drop)
+        - [x] Sidebar (node paletta, Catppuccin téma)
+        - [x] Custom Node-ok (Trigger, LLM, HTTP, Logic, Output)
+        - [ ] Node szerkesztő panel (properties)
+    - [ ] Auth Oldalak (Login, Register) <!-- id: 23 -->
+    - [ ] Dashboard <!-- id: 24 -->
+    - [ ] Pipeline Lista <!-- id: 25 -->
+    - [ ] Execution Részletek <!-- id: 26 -->
+    - [ ] API Kulcs Kezelés <!-- id: 27 -->
 - [ ] **Fázis 6: Futtatás és Deploy**
     - [ ] Scripts és Env változók <!-- id: 13 -->
     - [ ] Deploy <!-- id: 14 -->
