@@ -1,6 +1,7 @@
 import { prisma } from "@repo/database";
 import { CreateApiKeyRequest } from "@repo/types";
 import { ApiError } from "../lib/apiError";
+import { encrypt } from "../lib/crypto";
 
 export class ApiKeyService {
      static async create(userId: string, data: CreateApiKeyRequest) {
@@ -12,7 +13,7 @@ export class ApiKeyService {
           if (existing) {
                return prisma.apiKey.update({
                     where: { id: existing.id },
-                    data: { key: data.key },
+                    data: { key: encrypt(data.key) },
                });
           }
 
@@ -20,7 +21,7 @@ export class ApiKeyService {
                data: {
                     userId,
                     provider: data.provider,
-                    key: data.key,
+                    key: encrypt(data.key),
                },
           });
      }
