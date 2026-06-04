@@ -3,7 +3,7 @@ import "@xyflow/react/dist/style.css";
 import { usePipelineStore } from "@/store/pipelineStore";
 import { ReactFlowProvider } from "@xyflow/react";
 import { useCallback, useRef } from "react";
-import PipelineSidebar from "./sidebar";
+import PipelineSidebar from "./Sidebar";
 import NodeEditor from "./NodeEditor";
 import { useReactFlow } from "@xyflow/react";
 import { TriggerNode } from "./nodes/TriggerNode";
