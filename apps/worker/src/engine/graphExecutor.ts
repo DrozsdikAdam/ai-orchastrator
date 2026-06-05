@@ -35,7 +35,7 @@ export const executeGraph = async (executionId: string, pipelineId: string) => {
           for (const node of sortedNodes) {
                const resolvedData = resolveObjectVariables(node.data, context);
                const handler = nodeHandler(node.type);
-               const result = await handler(resolvedData, context);
+               const result = await handler(resolvedData, context, pipeline.userId);
                context[node.id] = result;
           }
 
