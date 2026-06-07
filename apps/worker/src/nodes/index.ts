@@ -1,3 +1,5 @@
+import { httpHandler } from "./httpHandler";
+
 type NodeHandler = (data: Record<string, any>, context: Record<string, any>, userId: string) => Promise<any>;
 
 export const nodeHandler = (type: string): NodeHandler => {
@@ -12,9 +14,7 @@ export const nodeHandler = (type: string): NodeHandler => {
                }
 
           case "http":
-               return async (data, context, options) => {
-                    return { output: "mock még nincs implementálva!" }
-               }
+               return httpHandler;
 
           case "logic":
                return async (data, context, options) => {
