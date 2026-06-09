@@ -18,7 +18,7 @@
           "@repo/types": "*",
           "bullmq": "^5.69.3",
           "dotenv": "^16.6.1",
-          "grok-sdk": "^0.0.1-security",
+          "groq-sdk": "^1.2.1",
           "ioredis": "^5.6.1",
           "openai": "^6.42.0",
           "zod": "^3.25.76"
