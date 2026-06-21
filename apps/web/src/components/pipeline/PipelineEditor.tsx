@@ -11,6 +11,7 @@ import { LLMNode } from "./nodes/LLMNode";
 import { HttpNode } from "./nodes/HttpNode";
 import { LogicNode } from "./nodes/LogicNode";
 import { OutputNode } from "./nodes/OutputNode";
+import PipelineToolbar from "./PipelineToolbar";
 
 
 const nodeTypes = {
@@ -52,23 +53,27 @@ function PipelineEditorInner() {
      return (
           <div className="flex w-full h-screen">
                <PipelineSidebar />
-               <div className="flex-1" ref={reactFlowWrapper}>
-                    <ReactFlow
-                         nodes={nodes}
-                         edges={edges}
-                         nodeTypes={nodeTypes}
-                         onNodesChange={onNodesChange}
-                         onEdgesChange={onEdgesChange}
-                         onConnect={onConnect}
-                         onDrop={onDrop}
-                         onDragOver={onDragOver}
-                         onNodeClick={(_, node) => selectNode(node.id)}
-                         fitView
-                    >
-                         <Background />
-                         <Controls />
-                         <MiniMap />
-                    </ReactFlow>
+               <div className="flex-1 flex flex-col relative" ref={reactFlowWrapper}>
+
+                    <PipelineToolbar />
+                    <div className="flex-1 w-full h-full">
+                         <ReactFlow
+                              nodes={nodes}
+                              edges={edges}
+                              nodeTypes={nodeTypes}
+                              onNodesChange={onNodesChange}
+                              onEdgesChange={onEdgesChange}
+                              onConnect={onConnect}
+                              onDrop={onDrop}
+                              onDragOver={onDragOver}
+                              onNodeClick={(_, node) => selectNode(node.id)}
+                              fitView
+                         >
+                              <Background />
+                              <Controls />
+                              <MiniMap />
+                         </ReactFlow>
+                    </div>
                </div>
                <NodeEditor />
           </div>
