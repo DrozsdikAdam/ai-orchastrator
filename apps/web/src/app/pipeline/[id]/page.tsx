@@ -15,22 +15,14 @@ export default function PipelineDetailsPage({ params }: Props) {
     const { isLoading, error, loadPipeline } = usePipelineStore();
 
     useEffect(() => {
-        if (id) {
-            loadPipeline(id);
-        }
+        if (id) loadPipeline(id);
     }, [id, loadPipeline]);
 
-    if (isLoading) {
-        return <div className="flex flex-col items-center justify-center h-screen">
-            <Loader />
-        </div>
-    }
 
-    if (error) {
-        return <div className="flex flex-col items-center justify-center h-screen">
-            <ErrorDisplay message={error} />
-        </div>
-    }
-
-    return <PipelineEditor />
+    return <div className="flex flex-col items-center justify-center h-screen">
+        {isLoading ?
+            <Loader /> : error ?
+                <ErrorDisplay message={error} /> : <PipelineEditor />
+        }
+    </div>
 }
