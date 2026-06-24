@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react"
 import { Loader2 } from "lucide-react";
-import { ApiClient } from "@/lib/apiClient";
+import { api } from "@/lib/apiClient";
 
 export default function loginPage() {
 
@@ -47,8 +47,7 @@ export default function loginPage() {
         setError(null);
         try {
             if (securityCheck()) return;
-            const client = new ApiClient("/auth/login");
-            const response: any = await client.post<{ token: string }>({
+            const response: any = await api.post<{ token: string }>("/auth/login", false, {
                 email: email!.email,
                 password: password!.password
             });

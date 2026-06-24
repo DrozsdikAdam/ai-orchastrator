@@ -2,7 +2,7 @@ import { useParams } from "next/navigation";
 import { usePipelineStore } from "@/store/pipelineStore";
 import { useState } from "react"
 import { Loader2 } from "lucide-react";
-import { ApiClient } from "@/lib/apiClient";
+import { api } from "@/lib/apiClient";
 import { Execution } from "@repo/types";
 
 type ExecutionStatus = "idle" | "running" | "completed" | "saving" | "failed";
@@ -35,7 +35,7 @@ export default function PipelineToolbar() {
             const executionId = await executePipeline(id);
             setExecutionStatus("running");
             const interval = setInterval(async () => {
-                const execution: Execution = await new ApiClient(`/executions/${executionId}`).get();
+                const execution: Execution = await api.get<Execution>(`/executions/${executionId}`, true);
                 if (execution.status === "COMPLETED") {
                     setExecutionStatus("completed");
                     clearInterval(interval);

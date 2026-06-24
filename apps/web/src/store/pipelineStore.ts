@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { Node, Edge, OnNodesChange, OnEdgesChange, OnConnect, applyNodeChanges, applyEdgeChanges, addEdge } from "@xyflow/react";
 import { Pipeline, Execution } from "@repo/types";
-import { ApiClient } from "@/lib/apiClient";
+import { api } from "@/lib/apiClient";
 
 interface PipelineState {
      // variables
@@ -76,8 +76,7 @@ export const usePipelineStore = create<PipelineState>((set, get) => ({
           set({ isLoading: true, error: null });
 
           try {
-               const pipeline = await new ApiClient(`/pipelines/${id}`)
-                    .get<Pipeline>();
+               const pipeline = await api.get<Pipeline>(`/pipelines/${id}`, true);
 
                const { nodes = [], edges = [] } =
                     (pipeline.definition || {}) as
@@ -102,7 +101,7 @@ export const usePipelineStore = create<PipelineState>((set, get) => ({
 
           try {
                const definition = { nodes, edges };
-               await new ApiClient(`/pipelines/${id}`).put<Pipeline>({
+               await api.put<Pipeline>(`/pipelines/${id}`, true, {
                     name,
                     description,
                     definition
@@ -115,8 +114,7 @@ export const usePipelineStore = create<PipelineState>((set, get) => ({
      },
 
      executePipeline: async (id) => {
-          const execution = await new ApiClient(`/pipelines/${id}/execute`)
-               .post<Execution>();
+          const execution = await api.post<Execution>(`/pipelines/${id}/execute`, true);
           return execution.id;
      }
 }))
