@@ -27,6 +27,18 @@ export class ApiClient {
         return headers;
     }
 
+    private async handleError(response: Response): Promise<never> {
+        let msg = "Hiba történt a kommunikáció során.";
+        try {
+            const data = await response.json();
+            if (data && data.message) {
+                msg = data.message;
+            }
+        } catch (e) {
+            // Nem JSON a válasz törzse
+        }
+        throw new Error(msg);
+    }
 
     async get<T = unknown>(path: string, includeToken: boolean): Promise<T> {
         const url = this.getPath(path);
@@ -35,7 +47,7 @@ export class ApiClient {
             headers: this.getHeaders(includeToken)
         });
         if (!response.ok) {
-            throw new Error("Failed to fetch");
+            await this.handleError(response);
         }
         return response.json() as Promise<T>;
     }
@@ -48,7 +60,7 @@ export class ApiClient {
             body: JSON.stringify(body)
         });
         if (!response.ok) {
-            throw new Error("Failed to fetch");
+            await this.handleError(response);
         }
         return response.json() as Promise<T>;
     }
@@ -61,7 +73,7 @@ export class ApiClient {
             body: JSON.stringify(body)
         });
         if (!response.ok) {
-            throw new Error("Failed to fetch");
+            await this.handleError(response);
         }
         return response.json() as Promise<T>;
     }
@@ -73,7 +85,7 @@ export class ApiClient {
             headers: this.getHeaders(includeToken)
         });
         if (!response.ok) {
-            throw new Error("Failed to fetch");
+            await this.handleError(response);
         }
         if (response.status === 204) {
             return {} as T;
