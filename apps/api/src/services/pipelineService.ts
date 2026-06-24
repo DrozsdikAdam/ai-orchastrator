@@ -58,6 +58,11 @@ export class PipelineService {
           // Verify ownership
           await this.getById(id, userId);
 
+          // Töröljük a kapcsolódó végrehajtásokat is, hogy elkerüljük a Foreign Key megsértését
+          await prisma.execution.deleteMany({
+               where: { pipelineId: id }
+          });
+
           return prisma.pipeline.delete({
                where: { id },
           });
